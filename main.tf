@@ -7,5 +7,6 @@ module "subnets" {
   for_each = var.subnets
   vpc_id = aws_vpc.main.id
   subnets = each.value
+  cidr = each.value
 
 }
