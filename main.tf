@@ -24,14 +24,3 @@ resource "aws_route" "igw" {
   gateway_id = aws_internet_gateway.igw.id
 }
 
-resource "aws_eip" "ngw" {
-  count = local.public_subnet_ids
-  domain = "vpc"
-}
-
-resource "aws_nat_gateway" "ngw" {
-  for_each = local.public_subnet_ids
-  allocation_id = lookup(lookup(aws_eip.ngw, each.key, null), "id", null)
-  subnet_id     = each.value["id"]
-
-}
