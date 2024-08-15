@@ -23,7 +23,7 @@ output "subnet" {
   value = aws_subnet.main
 }
 
-output "route_table" {
+output "route_table_ids" {
   value = aws_route_table.main
 }
 resource "aws_route_table_association" "a" {
