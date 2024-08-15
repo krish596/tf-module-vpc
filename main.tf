@@ -62,3 +62,20 @@ resource "aws_route" "default-vpc-peer-entry" {
   destination_cidr_block    = var.cidr
   vpc_peering_connection_id = aws_vpc_peering_connection.peering.id
 }
+
+resource "aws_instance" "instance" {
+  ami           = "ami-0b4f379183e5706b9"
+  instance_type = "t3.micro"
+  vpc_security_group_ids = [aws_security_group.allow_tls.id]
+  subnet_ids = length(private_subnet_ids[0])
+}
+
+resource "aws_security_group" "allow_tls" {
+  name        = "allow_tls"
+  description = "Allow TLS inbound traffic and all outbound traffic"
+  vpc_id      = aws_vpc.main.id
+
+  tags = {
+    Name = "allow_tls"
+  }
+}
