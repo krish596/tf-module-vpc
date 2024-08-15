@@ -25,12 +25,12 @@ resource "aws_route" "igw" {
 }
 
 resource "aws_eip" "ngw" {
-  for_each = lookup(lookup(module.subnets, "public", null), "subnet_ids", null)
+  count = local.public_subnet_ids
   domain = "vpc"
 }
 
 resource "aws_nat_gateway" "ngw" {
-  for_each = lookup(lookup(module.subnets, "public", null), "subnet_ids", null)
+  for_each = local.public_subnet_ids
   allocation_id = lookup(lookup(aws_eip.ngw, each.key, null), "id", null)
   subnet_id     = each.value["id"]
 
