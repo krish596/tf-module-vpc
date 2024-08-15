@@ -19,13 +19,7 @@ resource "aws_route_table" "main" {
   }
 }
 
-output "subnet" {
-  value = aws_subnet.main
-}
 
-output "route_table_ids" {
-  value = aws_route_table.main
-}
 resource "aws_route_table_association" "a" {
   for_each = var.subnets
   subnet_id      = lookup(lookup(aws_subnet.main, each.key, null), "id", null)
