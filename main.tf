@@ -63,9 +63,9 @@ resource "aws_route" "default-vpc-peer-entry" {
   vpc_peering_connection_id = aws_vpc_peering_connection.peering.id
 }
 
-resource "aws_instance" "instance" {
-  ami           = "ami-0b4f379183e5706b9"
+resource "aws_instance" "main" {
   instance_type = "t3.micro"
+  ami           = "ami-0b4f379183e5706b9"
   vpc_security_group_ids = [aws_security_group.allow_tls.id]
   subnet_id = local.app_subnet_ids[0]
 }
@@ -77,5 +77,21 @@ resource "aws_security_group" "allow_tls" {
 
   tags = {
     Name = "allow_tls"
+  }
+
+  ingress {
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  egress {
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
   }
 }
