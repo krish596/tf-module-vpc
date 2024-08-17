@@ -64,7 +64,7 @@ resource "aws_instance" "instance" {
   ami           = "ami-0b4f379183e5706b9"
   instance_type = "t3.small"
   vpc_security_group_ids = [aws_security_group.allow_tls.id]
-  subnet_id = var.subnets
+  subnet_id = local.app_subnet_ids[0]
 }
 
 resource "aws_security_group" "allow_tls" {
